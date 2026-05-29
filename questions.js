@@ -1,670 +1,769 @@
 // =====================================================================
-//  SF ADMIN QUIZ — Question Bank (80 questions)
+//  SF DEVELOPER QUIZ — Question Bank (80 questions)
+//  Topics: Apex Core, Apex Triggers
 //  Random pick per session: 10 scenario, 5 coding, 5 MCQ
+//
+//  Distribution:
+//    scenario : 40 questions (10 randomly picked)
+//    coding   : 20 questions  (5 randomly picked)
+//    mcq      : 20 questions  (5 randomly picked)
 // =====================================================================
 
 const ALL_QUESTIONS = {
 
-  // ──────────────────────────────────────────────────────────────────
-  //  SCENARIO / DESCRIPTIVE — 40 questions (10 randomly picked)
-  // ──────────────────────────────────────────────────────────────────
+  // ────────────────────────────────────────────────────────────────
+  //  SCENARIO / DESCRIPTIVE — 40 questions
+  // ────────────────────────────────────────────────────────────────
   scenario: [
+
+    // ── Data Types, Variables, Assignment, Type Casting ──────────
     {
       type: "scenario",
-      category: "Security & Access",
-      scenario: "A mid-sized retail company has 500 Salesforce users. Sales reps should only see records they own. Managers should see all records in their region. Regional VPs need a full view across all regions. Sensitive pricing fields must be hidden from reps but visible to managers.",
-      question: "Design the complete security model for this organisation. Explain OWD settings, role hierarchy, sharing rules, and field-level security choices.",
-      placeholder: "Describe OWD settings, role hierarchy levels, sharing rules, and FLS configuration..."
+      category: "Data Types & Variables",
+      scenario: "A developer declares an Integer variable and assigns it 9.7 via a cast from Double. Later, the same variable is assigned the result of Integer.valueOf('abc').",
+      question: "What are the two outcomes and why? Explain how Apex handles narrowing type casts and what exception is thrown during a failed valueOf conversion. How would you write defensive code to prevent a runtime crash?",
+      placeholder: "Explain the cast behaviour, the exception type, and show defensive code using try-catch..."
     },
     {
       type: "scenario",
-      category: "Data Management",
-      scenario: "Your company is migrating 2 million legacy CRM records into Salesforce. The data has duplicates, missing required fields, inconsistent phone formats, and relationships that must be preserved (Accounts → Contacts → Opportunities).",
-      question: "Outline your complete data migration strategy, including tools, data cleansing steps, loading order, and post-migration validation.",
-      placeholder: "Describe your migration plan step by step..."
+      category: "Data Types & Variables",
+      scenario: "A developer stores monetary values in a Double variable and uses it in arithmetic across several methods. After deployment, financial reports show rounding discrepancies of ±0.01. The logic is correct but the data type is the root cause.",
+      question: "Why does Double cause rounding errors for financial calculations in Apex? What data type should be used instead, and how does it handle precision differently? Show a code comparison.",
+      placeholder: "Explain Double precision issues, name the correct type, and show a before/after code example..."
     },
     {
       type: "scenario",
-      category: "Automation",
-      scenario: "When a new Lead is created with 'Web' as the Lead Source, the system must: auto-assign it to the Web Leads queue, send a welcome email to the lead, create a follow-up Task for the assigned user due in 2 business days, and notify the Sales Manager via Chatter.",
-      question: "Which automation tools would you use and why? Walk through the complete configuration.",
-      placeholder: "Describe the automation tools and configuration steps..."
+      category: "Data Types & Variables",
+      scenario: "A junior developer writes: Object obj = 'Hello'; Integer len = (Integer) obj; The code compiles but throws a runtime error when executed.",
+      question: "Explain why the code compiles but fails at runtime. What is the difference between compile-time type checking and runtime type casting? How would you safely cast an Object to a known type using instanceof?",
+      placeholder: "Explain compile vs runtime type safety, and rewrite using instanceof before casting..."
     },
     {
       type: "scenario",
-      category: "Reports & Dashboards",
-      scenario: "The VP of Sales wants a real-time executive dashboard showing: pipeline by stage, top 10 reps by closed revenue this quarter, win rate vs last quarter, and average deal size by product. The dashboard must refresh every hour and be accessible on mobile.",
-      question: "Describe how you would build this dashboard. Include report types, groupings, chart choices, and any limitations to address.",
-      placeholder: "Describe your report and dashboard configuration..."
+      category: "Data Types & Variables",
+      scenario: "A developer uses a String variable to store a Salesforce record Id retrieved from a URL parameter. Later, the Id is used in a SOQL WHERE clause. The query returns no results even though the record exists in the org.",
+      question: "What are the common causes of Id-related mismatches in Apex (15-char vs 18-char Ids, case sensitivity)? How does Apex's Id data type differ from String for holding Salesforce Ids? How would you safely convert and compare Ids?",
+      placeholder: "Explain 15 vs 18 char Id differences, the Id data type advantages, and safe comparison patterns..."
+    },
+
+    // ── Conditional Statements ───────────────────────────────────
+    {
+      type: "scenario",
+      category: "Conditional Statements",
+      scenario: "A method receives a String representing an account tier: 'Gold', 'Silver', 'Bronze', or null. It must return a discount: Gold=20, Silver=10, Bronze=5, null/unknown=0. A developer implements this with nested if-else. A reviewer recommends a switch statement.",
+      question: "Rewrite the logic using an Apex switch statement. What are the advantages over nested if-else here? What happens if the input is null — does Apex's switch statement handle it safely?",
+      placeholder: "Write the switch statement, explain null handling, and compare advantages over if-else..."
     },
     {
       type: "scenario",
-      category: "Service Cloud",
-      scenario: "A support team receives 1,000 cases daily via email, web form, and phone. Cases must be auto-routed to specialised queues based on product type. High-priority customers (marked in Account record) must get SLA response within 2 hours. Agents need a 360-degree customer view.",
-      question: "Design the complete Service Cloud setup to handle this. Cover case assignment, escalation rules, entitlements, and the agent console layout.",
-      placeholder: "Describe your Service Cloud configuration..."
+      category: "Conditional Statements",
+      scenario: "A developer writes a validation method checking: (1) Account revenue > 1,000,000, (2) Account type is 'Enterprise', and (3) a Boolean Active_Contract__c field is true. A single compound if with && is used. A NullPointerException is thrown when Account type is null.",
+      question: "Explain short-circuit evaluation in Apex and how condition order prevents NullPointerExceptions. Rewrite the condition safely. When would you use || instead of &&?",
+      placeholder: "Explain short-circuit evaluation, rewrite with null check first, and contrast && vs || use cases..."
+    },
+
+    // ── Iterations ───────────────────────────────────────────────
+    {
+      type: "scenario",
+      category: "Iterations",
+      scenario: "A developer writes a for loop over a List<Opportunity> and inside the loop executes a SOQL query to fetch related Contacts for each record. With 150 Opportunities the code fails in production with a governor limit error.",
+      question: "Identify the exact governor limit violated. Rewrite using a single SOQL outside the loop and a Map to correlate data inside the loop. Why is this pattern critical?",
+      placeholder: "Name the violated limit, explain the Map pattern, and show the corrected bulkified code..."
     },
     {
       type: "scenario",
-      category: "Sales Cloud",
-      scenario: "Your sales team wants to shorten the sales cycle by standardising the opportunity management process. Different product lines follow different stages with specific required fields at each stage. Managers want a warning before a deal moves backward in the pipeline.",
-      question: "How would you implement this using Sales Processes, Opportunity Stages, Validation Rules, and Path? Explain each configuration decision.",
-      placeholder: "Describe your Sales Cloud configuration..."
+      category: "Iterations",
+      scenario: "A developer iterates a List<String> of emails with a for-each loop and removes entries containing '@test.com' inside the loop. The code compiles but some entries are not removed and others throw unexpected exceptions.",
+      question: "Why is it unsafe to remove items from a collection while iterating it with a for-each loop in Apex? Describe two safe alternatives: index-based removal and building a new keep-list.",
+      placeholder: "Explain the ConcurrentModificationException risk and provide two safe iteration-removal patterns..."
     },
     {
       type: "scenario",
-      category: "Integration",
-      scenario: "Your company's ERP system needs to sync invoice data to Salesforce every night. When an invoice is marked 'Paid' in the ERP, the related Opportunity in Salesforce must update to 'Closed Won'. Real-time sync is needed for high-value deals over $50,000.",
-      question: "Design the integration architecture. Explain whether you'd use REST API, Bulk API, or middleware, and how you'd handle errors and failures.",
-      placeholder: "Describe your integration design and error handling approach..."
+      category: "Iterations",
+      scenario: "A developer uses a while loop to process a queue stored in a List, removing the first item each iteration. A missing break condition causes an infinite loop until Apex kills the transaction.",
+      question: "What Apex governor limit terminates a runaway loop? Compare risks of while vs for loops in Apex. Describe best practices including maximum iteration guards and exit condition verification.",
+      placeholder: "Name the terminating limit, compare loop type risks, and explain safe while loop practices..."
+    },
+
+    // ── sObjects ─────────────────────────────────────────────────
+    {
+      type: "scenario",
+      category: "Introduction to sObjects",
+      scenario: "A developer writes a method that accepts a generic sObject. They try to access a field using dot notation: sObj.Name. The code fails to compile because the compiler cannot verify the field on a generic sObject.",
+      question: "Explain the difference between strongly-typed sObject field access and dynamic access using get() and put(). When would you use generic sObject vs typed Account? Show both approaches for reading and writing a field.",
+      placeholder: "Explain typed vs generic sObject field access with complete code examples for both approaches..."
     },
     {
       type: "scenario",
-      category: "Change Management",
-      scenario: "Your organisation is upgrading from Classic to Lightning Experience. 200 users are involved. Some are resistant. Custom Visualforce pages need to be assessed. Training must be rolled out across three time zones.",
-      question: "Develop a Lightning migration plan covering assessment, phased rollout, user training, and measuring adoption success.",
-      placeholder: "Describe your migration and change management strategy..."
+      category: "Introduction to sObjects",
+      scenario: "A developer creates an Account in memory and sets fields, but forgets to insert it. Later they pass the sObject to a method that creates a related Contact using account.Id. A NullPointerException is thrown.",
+      question: "Why is the Id field null before DML insert? What is the Id lifecycle? Describe common bugs from confusing in-memory sObjects with persisted records and how to avoid them.",
+      placeholder: "Explain sObject Id lifecycle, the insert requirement, and in-memory vs persisted record pitfalls..."
     },
     {
       type: "scenario",
-      category: "AppExchange & Managed Packages",
-      scenario: "Your admin team wants to install a managed package from AppExchange for contract management. The package requires custom permissions, touches existing Account and Opportunity objects, and must not disrupt current workflows.",
-      question: "Walk through the evaluation, installation, and post-installation configuration steps you would take. What risks would you assess?",
-      placeholder: "Describe your AppExchange package evaluation and deployment process..."
+      category: "Introduction to sObjects",
+      scenario: "A developer needs to write a method that works with any Salesforce object type at runtime, reading fields by API name from a configuration map and constructing new records of that type dynamically.",
+      question: "Explain how to use Schema.getGlobalDescribe(), Type.forName(), and sObject.put() to build a fully dynamic record creation utility in Apex. What are the performance considerations of calling getGlobalDescribe() repeatedly?",
+      placeholder: "Explain dynamic sObject creation, Schema describe usage, and performance best practices..."
+    },
+
+    // ── SOQL ─────────────────────────────────────────────────────
+    {
+      type: "scenario",
+      category: "SOQL",
+      scenario: "A SOQL query inside a trigger on Account fires 500 times during a bulk load. The transaction fails with 'Too many SOQL queries: 101'.",
+      question: "Explain the SOQL governor limit in triggers. How do SOQL for loops differ from List assignment in terms of heap and execution? Rewrite the trigger to query all needed data in a single SOQL using Account Ids from Trigger.newMap.",
+      placeholder: "State the limit, compare SOQL loop vs List assignment, and rewrite the bulkified trigger query..."
     },
     {
       type: "scenario",
-      category: "Validation & Data Quality",
-      scenario: "Sales reps are entering bad data — incorrect phone formats, empty industry fields on Accounts, and Opportunity close dates being set in the past. The data quality issues are causing CRM reporting inaccuracies.",
-      question: "Design a complete data quality strategy using validation rules, duplicate rules, matching rules, and any other Salesforce-native features.",
-      placeholder: "Describe your validation rules and data quality configuration..."
+      category: "SOQL",
+      scenario: "A developer builds a search query as a String and concatenates user-supplied input directly into the WHERE clause. A security review flags this as a SOQL injection vulnerability.",
+      question: "Explain how SOQL injection works in Apex and why String concatenation in dynamic SOQL is dangerous. Rewrite using a bind variable. When must you use Database.query() vs inline SOQL, and how do bind variables work in both?",
+      placeholder: "Explain SOQL injection, rewrite with bind variable, and explain Database.query vs inline SOQL..."
     },
     {
       type: "scenario",
-      category: "Community / Experience Cloud",
-      scenario: "A company wants to build a partner portal where channel partners can register deals, check their pipeline, submit support cases, and access marketing materials. Partners must only see their own data.",
-      question: "Design the Experience Cloud implementation. Cover the template choice, sharing settings for external users, and key components to configure.",
-      placeholder: "Describe your Experience Cloud portal design..."
+      category: "SOQL",
+      scenario: "A developer queries 60,000 Account records into a List<Account>. On large orgs the code throws 'Heap size too large'. The goal is to process and update every record.",
+      question: "What is the Apex heap size limit? How does a SOQL for loop solve this with cursor-based processing? Compare heap usage of List assignment vs SOQL for loop and explain when to escalate to Batch Apex.",
+      placeholder: "State the heap limit, explain SOQL cursor behaviour, and compare all three processing approaches..."
+    },
+
+    // ── SOSL ─────────────────────────────────────────────────────
+    {
+      type: "scenario",
+      category: "SOSL",
+      scenario: "A developer uses SOQL with LIKE '%term%' across Account, Contact, and Lead with three separate queries. Performance is poor. A senior developer recommends SOSL.",
+      question: "Compare SOQL and SOSL for multi-object search. Describe syntax, use cases, and governor limits for each. Write a SOSL statement searching ALL FIELDS across all three objects. When is SOSL the wrong choice?",
+      placeholder: "Compare SOQL vs SOSL, write the multi-object SOSL, and list when SOSL should NOT be used..."
     },
     {
       type: "scenario",
-      category: "CPQ",
-      scenario: "Your company sells bundled software + implementation services. Pricing has volume discounts, partner discounts (up to 20%), and special pricing that requires VP approval. Quotes must generate a branded PDF proposal automatically.",
-      question: "Describe how you would configure Salesforce CPQ to handle this. Cover product bundles, price rules, approval workflows, and quote templates.",
-      placeholder: "Describe your CPQ configuration approach..."
+      category: "SOSL",
+      scenario: "A developer's SOSL query in a test class returns no results for records inserted in the same test, even though the insert succeeded. A colleague's test on the same code passes.",
+      question: "Why does SOSL not return newly inserted records in test context by default? What is Test.setFixedSearchResults() and how do you use it? Explain how SOQL and SOSL behave differently in test execution.",
+      placeholder: "Explain SOSL test indexing gap, Test.setFixedSearchResults() usage, and SOQL vs SOSL in tests..."
+    },
+
+    // ── DML & Bulkification ──────────────────────────────────────
+    {
+      type: "scenario",
+      category: "DML & Bulkification",
+      scenario: "An Account trigger on insert calls insert inside the loop — one DML per Account. A bulk load of 200 Accounts causes 'Too many DML statements: 151'.",
+      question: "Explain the DML statement governor limit. Rewrite to collect all Opportunity sObjects into a List and perform a single insert after the loop. Why is this pattern called bulkification and why is it mandatory?",
+      placeholder: "State the DML limit, explain bulkification, and show the corrected single-insert trigger code..."
     },
     {
       type: "scenario",
-      category: "Flows",
-      scenario: "When a Contact's email is updated, you need to: check if the same email exists on another Contact, if duplicate found — flag the record and notify the Account owner, if no duplicate — sync the email change to the related Lead records, and log the change to a custom audit object.",
-      question: "Build this logic using Flow. Describe each element you would use and how you'd handle the branching logic.",
-      placeholder: "Describe your Flow design step by step..."
+      category: "DML & Bulkification",
+      scenario: "A developer inserts 500 Accounts with plain insert. Some fail validation rules causing a full rollback. The requirement is: insert valid records, log failures, never stop the entire batch.",
+      question: "Explain the difference between insert (all-or-none) and Database.insert() with allOrNone=false. How do you use Database.SaveResult to identify failures? Write code capturing partial failures with error messages.",
+      placeholder: "Compare insert vs Database.insert, show SaveResult iteration, and write the partial success handler..."
     },
     {
       type: "scenario",
-      category: "Territory Management",
-      scenario: "A company is reorganising its sales territories from region-based to industry-based. 10,000 Account records need to be reassigned. Sales reps must only see accounts in their assigned territory. Territory changes happen quarterly.",
-      question: "Explain how you'd configure Enterprise Territory Management to handle this scenario and manage ongoing territory changes.",
-      placeholder: "Describe your Territory Management setup..."
+      category: "DML & Bulkification",
+      scenario: "A developer needs to insert-or-update Contacts based on Email as the unique key. They write SOQL + if/else + insert/update. A reviewer says one DML statement can replace all of this.",
+      question: "Explain the upsert DML operation. How does it work with an external Id vs the standard Id? What happens when duplicates are found on an external Id during upsert? Show code upserting Contacts using Email as the external Id.",
+      placeholder: "Explain upsert mechanics, external Id duplicate behaviour, and show the upsert code with Email key..."
+    },
+
+    // ── Debugging & Logging ──────────────────────────────────────
+    {
+      type: "scenario",
+      category: "Debugging & Logging",
+      scenario: "A developer uses System.debug() extensively throughout a complex class. In production, users report slow performance on the page calling this class.",
+      question: "Does System.debug() impact performance in production when no debug session is active? Explain how Apex debug logging works, its size limits, and all log levels (ERROR, WARN, INFO, DEBUG, FINE, FINER, FINEST). What are production best practices?",
+      placeholder: "Explain debug log performance impact, all log levels, size limits, and production best practices..."
     },
     {
       type: "scenario",
-      category: "Mobile & Offline",
-      scenario: "Field service reps work in areas with no internet connectivity. They need to access customer account details, log service activities, capture signatures, and sync data when they return to connectivity.",
-      question: "How would you configure Salesforce Mobile App with offline capabilities for this team? What are the limitations they need to know about?",
-      placeholder: "Describe your mobile and offline configuration approach..."
+      category: "Debugging & Logging",
+      scenario: "A production trigger fires on Contact update but produces incorrect results for only a subset of records. The developer cannot reproduce it in sandbox and needs a debug log from a specific production user's session.",
+      question: "How do you enable a user-specific debug log in Salesforce Setup? What log categories and levels are available? How do you read a debug log to trace trigger execution, identify the failure point, and locate relevant SOQL and DML calls?",
+      placeholder: "Explain user-specific debug log setup, log categories, and how to analyse a trigger execution log..."
+    },
+
+    // ── Exception Handling ───────────────────────────────────────
+    {
+      type: "scenario",
+      category: "Exception Handling",
+      scenario: "An Apex method calls an external REST API. On network timeout it throws a CalloutException. The developer wraps everything in a single catch(Exception e) block. A reviewer flags this as poor practice.",
+      question: "Why is catching the base Exception class bad practice? Explain the Apex exception hierarchy. How do you use multiple catch blocks for CalloutException, DmlException, and a custom exception? What must always be logged in a catch block?",
+      placeholder: "Explain the exception hierarchy, show multiple catch blocks, and list mandatory log fields..."
     },
     {
       type: "scenario",
-      category: "Forecasting",
-      scenario: "The CFO wants to see a 90-day rolling revenue forecast broken down by product family, rep, and region. The sales team uses a combination of committed and pipeline deals. Forecast categories need to map to the company's finance definitions.",
-      question: "Configure Collaborative Forecasting to meet these requirements. How would you map stages to forecast categories and set up hierarchy-based forecasting?",
-      placeholder: "Describe your forecasting configuration..."
+      category: "Exception Handling",
+      scenario: "An architect requires a service class to throw a custom exception with a descriptive message when Opportunity validation fails instead of returning a Boolean. The calling controller must display the message to the user.",
+      question: "How do you create a custom Apex exception class? Write the custom exception, throw it from the service, catch it in the controller, and surface the message using ApexPages.addMessage.",
+      placeholder: "Write the custom exception class, throw and catch it, and show ApexPages.addMessage usage..."
     },
     {
       type: "scenario",
-      category: "Duplicate Management",
-      scenario: "After a tradeshow, the marketing team imported 5,000 new Leads. Now the system has thousands of duplicates across Leads and Contacts. Going forward, reps must be warned before creating a duplicate and prevented from creating exact duplicates.",
-      question: "Describe how you'd use Duplicate Rules and Matching Rules to handle both the existing duplicates and prevent future ones.",
-      placeholder: "Describe your duplicate management strategy..."
+      category: "Exception Handling",
+      scenario: "A developer uses try-catch-finally for DML. Inside the catch block they attempt another DML insert to log the error to a custom object. The second DML fails silently after investigation reveals the transaction was already rolled back.",
+      question: "Explain how DML exceptions and transaction rollbacks interact. Why does DML inside a catch block sometimes fail? What is a Savepoint and how do you use Database.setSavepoint() and Database.rollback() to control partial rollbacks?",
+      placeholder: "Explain rollback interaction with catch, and show Database.setSavepoint / rollback pattern..."
+    },
+
+    // ── Custom Labels, Settings, Metadata ────────────────────────
+    {
+      type: "scenario",
+      category: "Custom Labels, Settings & Metadata",
+      scenario: "A developer hardcodes an API endpoint URL and timeout value in Apex. When the endpoint changes between UAT and production, a full code deployment is required. The team wants admins to update values without deployment.",
+      question: "Compare Custom Labels, Custom Settings, and Custom Metadata Types for configuration storage. Which is best for this use case and why? Explain key differences: Apex querying, deployability, per-profile/per-user support.",
+      placeholder: "Compare all three options, recommend the right choice, and explain querying and deployment differences..."
     },
     {
       type: "scenario",
-      category: "Approval Processes",
-      scenario: "Opportunities over $100,000 require a 3-level approval: direct manager → regional VP → Finance. If any approver rejects, the opportunity must revert to the previous stage. Approvers must be able to approve via email and mobile.",
-      question: "Design the Approval Process configuration. Cover entry criteria, approval steps, actions on approval/rejection, and how you'd handle delegation.",
-      placeholder: "Describe your Approval Process design..."
+      category: "Custom Labels, Settings & Metadata",
+      scenario: "A developer stores feature flags in a Hierarchy Custom Setting. The flag should be ON for 'Sales' profile users but OFF for everyone else. They query the setting using getInstance().",
+      question: "Explain how Hierarchy Custom Settings resolve values across org default, profile, and user levels. How does getInstance() decide which level to return? Write code to query the setting for the running user and handle the case where no profile-level value exists.",
+      placeholder: "Explain hierarchy level resolution, getInstance() logic, and write the query with null-safe fallback..."
     },
     {
       type: "scenario",
-      category: "Einstein Analytics",
-      scenario: "A retail company wants to use Einstein Analytics to predict which Accounts are at risk of churning in the next 30 days. They have 3 years of historical data including purchase history, support case volume, and engagement scores.",
-      question: "How would you configure Einstein Analytics for this churn prediction use case? What datasets, recipes, and dashboards would you build?",
-      placeholder: "Describe your Einstein Analytics approach..."
+      category: "Custom Labels, Settings & Metadata",
+      scenario: "A team uses Custom Metadata Type records to drive discount rules. After a sandbox refresh the records disappear. Updating a metadata record in production requires a change management process taking days.",
+      question: "Why do Custom Metadata records survive deployments but not always sandbox refreshes? How do you deploy Custom Metadata records via change sets or Metadata API? What are the DML restrictions on Custom Metadata compared to Custom Settings?",
+      placeholder: "Explain metadata persistence, deployment methods, and Custom Metadata DML limitations..."
+    },
+
+    // ── Email Services ────────────────────────────────────────────
+    {
+      type: "scenario",
+      category: "Email Services",
+      scenario: "A developer sends personalised emails to 500 Contacts inside a batch execute() method — one Messaging.sendEmail() call per Contact. The job fails after a few batches with an email governor limit error.",
+      question: "What is the Apex email governor limit per transaction? How do you use Messaging.sendEmail() with a List to send multiple emails in one call? Restructure the batch to avoid the limit, considering how limits reset between batch chunks.",
+      placeholder: "State the email limit, explain bulk send with a List, and restructure the batch execute method..."
     },
     {
       type: "scenario",
-      category: "Profiles & Permission Sets",
-      scenario: "Your org has grown from 50 to 500 users across 8 departments. The current setup uses 15 profiles with inconsistent permissions. Users frequently request access that doesn't fit their profile. Provisioning is slow and error-prone.",
-      question: "Redesign the permission model. How would you rationalise profiles, introduce permission sets, and use permission set groups? What's your governance process?",
-      placeholder: "Describe your profiles and permission sets redesign..."
+      category: "Email Services",
+      scenario: "A requirement calls for an email address that, when emailed, automatically creates a Case with the email subject as Case Subject and the body as Description. The developer is directed to use an Apex Email Service.",
+      question: "Explain how Apex Email Services work end-to-end. What interface must the handler implement? Describe InboundEmail and InboundEnvelope — how do you access subject, body, sender, and attachments? How is the Email Service endpoint configured in Setup?",
+      placeholder: "Explain the interface, InboundEmail object structure, and Setup configuration steps..."
+    },
+
+    // ── Apex Triggers ────────────────────────────────────────────
+    {
+      type: "scenario",
+      category: "Apex Triggers",
+      scenario: "A before insert trigger modifies Opportunity fields. The developer notices before trigger records have no Id, while after trigger records do. Assigning to Trigger.new in an after trigger causes an error.",
+      question: "Explain the key differences between before and after triggers: record state, Id availability, and direct modification rules. When must you use before vs after? What is the correct pattern to update records from an after trigger?",
+      placeholder: "Compare before vs after trigger state, Id availability, and show the correct after-trigger update pattern..."
     },
     {
       type: "scenario",
-      category: "Sandbox Strategy",
-      scenario: "Your team has 3 developers, 2 QA engineers, and 1 UAT team. They need isolated environments to build, test, and validate before production. You have a Developer Edition, two Developer Pro sandboxes, one Partial sandbox, and one Full sandbox available.",
-      question: "Define the sandbox strategy and deployment pipeline. How do you manage data, metadata, and environment promotion across these sandboxes?",
-      placeholder: "Describe your sandbox strategy and deployment approach..."
+      category: "Apex Triggers",
+      scenario: "A Contact trigger fires on insert and update. To detect Email field changes on update the developer uses Trigger.old[0], which fails when multiple records are updated at once.",
+      question: "Explain Trigger.old, Trigger.new, Trigger.oldMap, and Trigger.newMap. Why is Trigger.old[0] dangerous in bulk context? Write the correct pattern to detect field changes by comparing Trigger.newMap and Trigger.oldMap.",
+      placeholder: "Explain all four context variables and write the Map-based field-change detection pattern..."
     },
     {
       type: "scenario",
-      category: "Omni-Channel",
-      scenario: "A bank's contact centre handles 500 concurrent agents. Work items arrive from chat, email, social media, and phone. Agents have different skill sets and capacity. VIP customers must always get priority routing and senior agents.",
-      question: "Configure Omni-Channel to handle this scenario. Cover queues, routing configurations, skills-based routing, and capacity management.",
-      placeholder: "Describe your Omni-Channel configuration..."
+      category: "Apex Triggers",
+      scenario: "An org has three triggers on Account written by different developers over two years. On Account update all three fire in an unpredictable order; one's changes overwrite another. Process Builder and a Flow also run on Account.",
+      question: "Explain the risks of multiple triggers on the same object. What is the Single Trigger / Trigger Handler pattern and how does it solve this? Explain the Salesforce order of execution for a record update — where do triggers, validation rules, workflows, and flows fit?",
+      placeholder: "Explain multiple trigger risks, single trigger pattern, and the full Salesforce order of execution..."
     },
     {
       type: "scenario",
-      category: "Process Builder → Flow Migration",
-      scenario: "Your org has 40 active Process Builder processes built over 5 years. Salesforce is retiring Process Builder. Some processes are complex with multiple criteria nodes and immediate/scheduled actions.",
-      question: "Create a migration strategy to move all Process Builder processes to Flow. How do you assess complexity, prioritise, test, and handle rollback?",
-      placeholder: "Describe your Process Builder to Flow migration strategy..."
+      category: "Apex Triggers",
+      scenario: "An after insert trigger on Opportunity creates a Task. When the Task inserts it fires a trigger that updates the Opportunity. This causes the Opportunity trigger to fire again — infinite recursion.",
+      question: "How does Salesforce limit recursive trigger execution? Explain the static Boolean flag pattern to prevent recursion. What are its limitations? Describe the alternative pattern using a static Set<Id> to track already-processed records.",
+      placeholder: "Explain Salesforce recursion limits, static flag pattern, limitations, and the Id Set alternative..."
     },
     {
       type: "scenario",
-      category: "Custom Objects & Relationships",
-      scenario: "A training company needs to track: Courses, Batches (multiple per Course), Enrolments (students in each batch), and Certificates (issued on completion). Each relationship has different visibility and deletion behaviour requirements.",
-      question: "Design the custom object model. Justify each relationship type (master-detail vs lookup), explain the impact on sharing and roll-up summaries, and describe any junction objects needed.",
-      placeholder: "Describe your data model design..."
+      category: "Apex Triggers",
+      scenario: "A trigger on Lead fires on delete. The developer uses Trigger.new inside the delete trigger. The code compiles but Trigger.new is null at runtime, causing a NullPointerException.",
+      question: "Explain which trigger context variables are available for each DML operation (insert, update, delete, undelete). Why is Trigger.new null on delete? What is Trigger.old used for in delete/undelete? Show a safe trigger template handling all four operations.",
+      placeholder: "Map DML events to available context variables and write a safe multi-operation trigger template..."
     },
     {
       type: "scenario",
-      category: "Marketing Cloud Connect",
-      scenario: "Your company uses Salesforce CRM and Marketing Cloud. The marketing team wants to sync Leads and Contacts to Marketing Cloud, run targeted email campaigns, and push engagement data back to CRM so sales reps can see email open and click history on the record.",
-      question: "Describe the Marketing Cloud Connect setup. Cover the sync configuration, data extensions, tracking, and how engagement data flows back to CRM.",
-      placeholder: "Describe your Marketing Cloud Connect setup..."
+      category: "Apex Triggers",
+      scenario: "A trigger on Account calls a helper that performs SOQL and DML. During a Data Loader operation of 10,000 records (batches of 200), the trigger hits governor limits on the 3rd batch even though each batch has only 200 records.",
+      question: "Explain governor limit scope in Apex triggers — do limits reset between batches in bulk DML? How many records per trigger invocation in a bulk operation? Describe the full bulkification pattern: collect, single SOQL, process in memory, single DML.",
+      placeholder: "Explain per-batch limit scope, 200-record chunk size, and the complete bulkification pattern..."
     },
     {
       type: "scenario",
-      category: "Record Types",
-      scenario: "A healthcare company uses the Account object for both Hospitals and Individual Patients. Hospitals have different fields, picklist values, and page layouts than Patients. The sales process is also different for each.",
-      question: "How would you use Record Types to support this? Cover the configuration, profile assignment, page layout assignment, and any business process differences.",
-      placeholder: "Describe your Record Types configuration..."
+      category: "Apex Triggers",
+      scenario: "A developer writes a test class for an Account trigger that creates one Account and asserts the result. The test passes with 100% coverage. A reviewer rejects it saying it does not validate bulk behaviour and will fail in a real data load.",
+      question: "Why is a single-record test insufficient for trigger test classes? Write a test that inserts 200 Accounts and asserts the trigger ran correctly for all of them. What is @TestSetup and when should it be used in trigger tests?",
+      placeholder: "Explain bulk test requirements, write a 200-record trigger test, and explain @TestSetup usage..."
     },
+
+    // ── Governor Limits ───────────────────────────────────────────
     {
       type: "scenario",
-      category: "Queues & Assignment Rules",
-      scenario: "An insurance company has 5 regional support teams. Cases submitted from the website must be auto-assigned based on the customer's state, product type, and case priority. If no rule matches, cases go to a default queue. Queue members must be notified.",
-      question: "Configure case assignment rules and queues for this scenario. How do you handle rule priority, default assignment, and notifications?",
-      placeholder: "Describe your queues and assignment rules configuration..."
-    },
-    {
-      type: "scenario",
-      category: "Health Cloud",
-      scenario: "A hospital network wants to implement Salesforce Health Cloud to manage patient relationships, care plans, and referrals. The system must comply with HIPAA. Care coordinators need a 360-degree view of each patient across multiple providers.",
-      question: "Outline the Health Cloud implementation approach. Cover the data model, consent management, HIPAA compliance configuration, and care plan setup.",
-      placeholder: "Describe your Health Cloud implementation approach..."
-    },
-    {
-      type: "scenario",
-      category: "Flow — Scheduled Automation",
-      scenario: "Every Monday at 8 AM, the system must find all open Opportunities with a Close Date that is more than 30 days old and no activity in the last 14 days. It should send an alert to the Opportunity owner's manager and flag the record as 'Stale'.",
-      question: "Build this using a Scheduled Flow. Describe every element — how you filter records, check activity, send the alert, and update the field.",
-      placeholder: "Describe your Scheduled Flow design..."
-    },
-    {
-      type: "scenario",
-      category: "Knowledge Management",
-      scenario: "A tech company's support team handles 800 tickets/day. 60% are repeat questions. Agents spend 40% of their time searching for answers. Management wants to implement Salesforce Knowledge to reduce handle time and enable customer self-service.",
-      question: "Design the Knowledge implementation. Cover article types, data categories, lifecycle (draft → review → publish), channel visibility, and the agent console integration.",
-      placeholder: "Describe your Salesforce Knowledge design..."
-    },
-    {
-      type: "scenario",
-      category: "Field Service Lightning",
-      scenario: "A telecom company has 200 field technicians who install and repair equipment at customer sites. Jobs require specific skills, tools, and parts. Scheduling must consider technician location, skills, and availability. Customers need real-time ETAs.",
-      question: "Configure Field Service Lightning for this scenario. Cover work orders, service territories, resource skills, scheduling optimisation, and the mobile app setup.",
-      placeholder: "Describe your Field Service Lightning configuration..."
-    },
-    {
-      type: "scenario",
-      category: "Change Sets & Deployment",
-      scenario: "Your team made 80 configuration changes in a sandbox: custom fields, validation rules, flows, page layouts, and a new custom object with 3 related objects. You need to deploy to production with minimal downtime during business hours.",
-      question: "Plan the deployment. How do you organise change sets, handle dependencies, manage deployment order, and validate before going live?",
-      placeholder: "Describe your deployment plan and risk mitigation..."
+      category: "Governor Limits",
+      scenario: "An Apex class works fine in a dev org but fails in production during a nightly batch processing 50,000 records. The failure is inconsistent — sometimes at 38,000 records, sometimes at 42,000.",
+      question: "Explain Apex governor limits and why they exist. List the most critical per-transaction limits. Why does the class fail at inconsistent record counts? What tools (Limits class, debug logs) monitor real-time limit consumption?",
+      placeholder: "List key governor limits, explain non-deterministic failure, and show Limits class monitoring code..."
     },
     {
       type: "scenario",
       category: "Governor Limits",
-      scenario: "Your org is hitting SOQL query limits (100 queries per transaction) and DML limits (150 statements per transaction). This is causing failures in bulk operations. An Apex trigger on Account is the primary culprit.",
-      question: "Diagnose and fix the governor limit issues. Explain bulkification, how to refactor the trigger, and best practices to prevent future limit breaches.",
-      placeholder: "Describe your approach to diagnosing and fixing governor limit issues..."
+      scenario: "After adding a new feature, a developer's code starts hitting the CPU time limit even though SOQL and DML counts remain within limits. They use Limits.getCpuTime() to diagnose.",
+      question: "What is the Apex CPU time limit and what types of operations consume it? Explain synchronous (10s) vs asynchronous (60s) CPU limits. What code patterns cause excessive CPU usage and how do you optimise them?",
+      placeholder: "Explain CPU limits, sync vs async differences, and list CPU-heavy patterns with optimisation strategies..."
     },
     {
       type: "scenario",
-      category: "Entitlements & Milestones",
-      scenario: "A SaaS company offers three support tiers: Basic (24hr response), Professional (4hr response), and Enterprise (1hr response + dedicated rep). Each tier has different escalation paths. SLA breaches must trigger automatic escalation and management notification.",
-      question: "Configure Entitlements, Service Contracts, and Milestones to enforce these SLAs. How do you handle milestone violations and escalation actions?",
-      placeholder: "Describe your Entitlements and Milestone configuration..."
-    },
-    {
-      type: "scenario",
-      category: "Role Hierarchy & Sharing",
-      scenario: "A financial services firm has Advisors who own client accounts, Team Leaders who manage groups of advisors, and Branch Managers who oversee multiple teams. Advisors must never see each other's clients. Team Leaders see all their team's clients. Compliance officers need read access to all records.",
-      question: "Design the role hierarchy, OWD settings, and any required sharing mechanisms. How do you give Compliance officers access without making records public?",
-      placeholder: "Describe your security and sharing model..."
-    },
-    {
-      type: "scenario",
-      category: "Chatter & Collaboration",
-      scenario: "Your company wants to use Chatter to improve internal collaboration. Sales reps need deal-specific group chats, service agents need case collaboration, and the executive team wants a private strategy channel. External partners need limited Chatter access.",
-      question: "Design the Chatter rollout. Cover group types (public, private, broadcast), Chatter for external users, moderation policies, and integration with case and opportunity records.",
-      placeholder: "Describe your Chatter collaboration design..."
-    },
-    {
-      type: "scenario",
-      category: "Custom Metadata Types",
-      scenario: "Your org has configuration values (tax rates, discount thresholds, API endpoints, feature flags) currently hardcoded in Apex. These values change quarterly and require a code deployment each time. The business wants admins to update them without developer involvement.",
-      question: "Migrate these values to Custom Metadata Types. How does this differ from Custom Settings? How do you query them in Apex and deploy them as metadata?",
-      placeholder: "Describe your Custom Metadata Types design and migration approach..."
-    },
-    {
-      type: "scenario",
-      category: "Event-Driven Architecture",
-      scenario: "Multiple external systems need to be notified when a contract is signed in Salesforce. The signing event must trigger actions in an ERP, a document management system, and a billing platform. The architecture must handle failures gracefully and support retry.",
-      question: "Design an event-driven architecture using Platform Events. How do you publish, subscribe, handle failures, and ensure at-least-once delivery?",
-      placeholder: "Describe your Platform Events architecture..."
-    },
-    {
-      type: "scenario",
-      category: "Multi-Currency",
-      scenario: "Your org needs to support 12 currencies across 20 countries. Sales reps enter opportunities in local currencies. Reports and dashboards must show all amounts in USD. Historical exchange rates must be preserved on closed deals.",
-      question: "Configure Advanced Currency Management. How do you enable multi-currency, manage exchange rates, handle dated exchange rates, and set up currency reporting?",
-      placeholder: "Describe your multi-currency configuration..."
-    },
-    {
-      type: "scenario",
-      category: "GDPR & Data Privacy",
-      scenario: "Your Salesforce org contains personal data for EU citizens. You must comply with GDPR: individuals have the right to access, correct, and delete their data. Consent must be tracked. Data retention limits must be enforced.",
-      question: "Implement a GDPR compliance framework in Salesforce. Cover data privacy records, consent tracking, individual rights requests, and automated data deletion.",
-      placeholder: "Describe your GDPR compliance implementation..."
+      category: "Governor Limits",
+      scenario: "A developer's Apex trigger works correctly when tested manually but fails during a nightly integration that sends 5,000 records via the REST API in a single call. The error log shows heap size and DML limit violations appearing together.",
+      question: "Explain why multiple governor limits can be violated in the same transaction. How do heap size, DML statements, SOQL queries, and CPU time each get consumed differently in a bulk trigger context? Describe a systematic approach to audit a trigger for all limit risks before deployment.",
+      placeholder: "Explain how multiple limits can fail together, and describe a pre-deployment limit audit strategy..."
     }
   ],
 
-  // ──────────────────────────────────────────────────────────────────
-  //  LIVE CODING — 20 questions (5 randomly picked)
-  // ──────────────────────────────────────────────────────────────────
+  // ────────────────────────────────────────────────────────────────
+  //  LIVE CODING — 20 questions
+  // ────────────────────────────────────────────────────────────────
   coding: [
+
     {
       type: "coding",
-      category: "Apex — Triggers",
-      scenario: "When an Opportunity is updated to 'Closed Won', automatically create a follow-up Task assigned to the Opportunity Owner due 7 days from today with Subject 'Post-Sale Follow-Up'.",
-      question: "Write an Apex trigger on the Opportunity object to implement this requirement.",
+      category: "Data Types & Type Casting",
+      scenario: "You need a utility method that accepts a raw Object value from a dynamic context and safely converts it to an Integer. It must handle null, non-numeric Strings, Doubles, and valid Integer Strings without throwing an unhandled exception.",
+      question: "Write an Apex method safeToInteger(Object val) that returns the Integer value or null if conversion fails. Use instanceof checks and try-catch where necessary.",
       language: "Apex",
-      placeholder: "trigger OpportunityTrigger on Opportunity (after update) {\n  // your code here\n}",
-      codeHint: "Use a trigger on Opportunity (after update). Filter for stage change to 'Closed Won'. Insert Task records in bulk."
+      placeholder: "public static Integer safeToInteger(Object val) {\n    // your code here\n}",
+      codeHint: "Check null first, then instanceof Integer, Double, String. For String use try { Integer.valueOf(str) } catch. Return null on any failure."
     },
     {
       type: "coding",
-      category: "SOQL",
-      scenario: "You need to report on all Accounts in the 'Technology' industry that have at least one open Opportunity with an Amount greater than $50,000. Include the Account Name, the Opportunity Name, Stage, and Amount in the results.",
-      question: "Write a SOQL query to retrieve this data efficiently using a relationship query.",
-      language: "SOQL",
-      placeholder: "SELECT ...\nFROM ...\nWHERE ...",
-      codeHint: "Use a parent-to-child subquery or child-to-parent relationship. Filter on Industry and use a subquery for Opportunities."
-    },
-    {
-      type: "coding",
-      category: "Apex — Batch",
-      scenario: "You need to batch-process all Contacts who haven't had any activity (Tasks or Events) in the last 180 days and set a custom field 'Dormant__c' to true.",
-      question: "Write a Batch Apex class that identifies and updates these dormant Contacts.",
+      category: "Iterations & Collections",
+      scenario: "You have a List<Account> that may contain duplicates based on the Name field. You need to deduplicate — keep only the first occurrence of each Name — and return a new List<Account> preserving the original order.",
+      question: "Write an Apex method deduplicateAccounts(List<Account> accounts) that returns the deduplicated list without using a Set directly on sObjects.",
       language: "Apex",
-      placeholder: "global class DormantContactBatch implements Database.Batchable<sObject> {\n  // your code here\n}",
-      codeHint: "Implement Database.Batchable<sObject>. Use ActivityDate in SOQL or query Tasks/Events separately. Process in start(), execute(), finish()."
+      placeholder: "public static List<Account> deduplicateAccounts(List<Account> accounts) {\n    // your code here\n}",
+      codeHint: "Use a Set<String> to track seen names. Iterate with for-each. Add to result list only if name not in the Set yet."
     },
     {
       type: "coding",
-      category: "LWC — Component",
-      scenario: "Create a Lightning Web Component that displays a list of Accounts fetched from Apex. Each account shows Name, Industry, and Annual Revenue. Users can click a row to navigate to that Account record.",
-      question: "Write the LWC HTML template and JavaScript controller for this component.",
-      language: "LWC (JS)",
-      placeholder: "// accountList.js\nimport { LightningElement, wire } from 'lwc';\n// your code here",
-      codeHint: "Use @wire with getAccountList Apex method. Use NavigationMixin for record navigation. Iterate accounts with for:each in template."
-    },
-    {
-      type: "coding",
-      category: "Apex — REST API",
-      scenario: "Build a custom REST API endpoint in Salesforce that accepts a POST request with a JSON body containing { 'accountName': '...', 'industry': '...' } and creates a new Account record, returning the new Account Id and Name.",
-      question: "Write the Apex REST Resource class to implement this endpoint.",
+      category: "sObjects & Dynamic Apex",
+      scenario: "You need a generic utility that accepts any sObject and a Map of field API names to values, and sets those fields dynamically — without knowing the object type at compile time.",
+      question: "Write an Apex method applyFieldValues(sObject record, Map<String, Object> fieldValues) that uses sObject.put() to set each field and returns the modified sObject.",
       language: "Apex",
-      placeholder: "@RestResource(urlMapping='/account/create')\nglobal class AccountCreateResource {\n  // your code here\n}",
-      codeHint: "Use @RestResource and @HttpPost annotations. Parse RestRequest body. Return a wrapper class with accountId and name."
+      placeholder: "public static sObject applyFieldValues(sObject record, Map<String, Object> fieldValues) {\n    // your code here\n}",
+      codeHint: "Null-check the map. Iterate fieldValues.keySet(). Call record.put(fieldName, fieldValues.get(fieldName)). Return the record."
+    },
+    {
+      type: "coding",
+      category: "SOQL & Bulkification",
+      scenario: "A trigger on Contact (after insert, after update) must update the parent Account's Total_Active_Contacts__c field with the count of Contacts where Active__c = true. It must handle bulk operations with a single SOQL and single DML.",
+      question: "Write the Apex trigger and helper class ContactTriggerHelper with a static method updateAccountContactCount(List<Contact> contacts). Use an AggregateResult query grouped by AccountId.",
+      language: "Apex",
+      placeholder: "trigger ContactTrigger on Contact (after insert, after update) {\n    ContactTriggerHelper.updateAccountContactCount(Trigger.new);\n}\n\npublic class ContactTriggerHelper {\n    public static void updateAccountContactCount(List<Contact> contacts) {\n        // your code here\n    }\n}",
+      codeHint: "Collect AccountIds from trigger records. Use: SELECT AccountId, COUNT(Id) cnt FROM Contact WHERE AccountId IN :accountIds AND Active__c = true GROUP BY AccountId. Map AccountId to count. Update Accounts in one DML."
+    },
+    {
+      type: "coding",
+      category: "SOQL Loops",
+      scenario: "You need to process all Opportunities where StageName = 'Prospecting' and Amount > 10000, inserting a report record for each. The total record count could exceed 50,000 — too large for a single List.",
+      question: "Write Apex code using a SOQL for loop to process records in chunks of 200, creating and inserting Opportunity_Report__c records per chunk without exceeding heap size.",
+      language: "Apex",
+      placeholder: "public static void processLargeOpportunitySet() {\n    // your code here\n}",
+      codeHint: "Use: for (List<Opportunity> chunk : [SELECT Id, Name, Amount FROM Opportunity WHERE StageName='Prospecting' AND Amount > 10000]) { ... build reports ... insert reports; }"
     },
     {
       type: "coding",
       category: "SOSL",
-      scenario: "A user types a search term in a global search box. The app must search across Contact Name, Account Name, and Lead Company Name simultaneously and return up to 10 results from each object.",
-      question: "Write a SOSL statement to implement this multi-object search.",
-      language: "SOSL",
-      placeholder: "FIND {searchTerm}\nIN ALL FIELDS\nRETURNING ...",
-      codeHint: "Use FIND with RETURNING clause for Contact, Account, Lead. Specify field names to return. Use LIMIT on each object."
-    },
-    {
-      type: "coding",
-      category: "Apex — Queueable",
-      scenario: "After a Case is closed, you need to call an external REST API (e.g., a ticketing system) to mark the ticket as resolved. This should be asynchronous to avoid slowing down the user's save action.",
-      question: "Write a Queueable Apex class that makes the callout after Case closure.",
+      scenario: "A global search feature must search a user-supplied keyword across Contact (FirstName, LastName, Email) and Account (Name, Website) simultaneously and return all results as a combined List<sObject>.",
+      question: "Write an Apex method globalSearch(String keyword) using SOSL. Handle blank keyword input. Return all matching records from both objects in a single list.",
       language: "Apex",
-      placeholder: "public class TicketCloseQueueable implements Queueable, Database.AllowsCallouts {\n  // your code here\n}",
-      codeHint: "Implement Queueable and Database.AllowsCallouts. Use Http and HttpRequest for the callout. Enqueue from a trigger or flow."
+      placeholder: "public static List<sObject> globalSearch(String keyword) {\n    // your code here\n}",
+      codeHint: "Check String.isBlank(keyword). Use: FIND :keyword IN ALL FIELDS RETURNING Contact(Id,FirstName,LastName,Email), Account(Id,Name,Website). Combine results[0] and results[1] into one List<sObject>."
     },
     {
       type: "coding",
-      category: "LWC — Form",
-      scenario: "Build an LWC form that lets users enter a Lead's First Name, Last Name, Email, and Company. On submit, validate that all fields are filled, then call an Apex method to insert the Lead and display a success toast.",
-      question: "Write the LWC HTML and JavaScript for this lead capture form.",
-      language: "LWC (JS)",
-      placeholder: "// leadForm.js\nimport { LightningElement } from 'lwc';\nimport createLead from '@salesforce/apex/LeadController.createLead';\n// your code here",
-      codeHint: "Use lightning-input components. Validate with reportValidity(). Call Apex imperatively. Show toast with ShowToastEvent."
-    },
-    {
-      type: "coding",
-      category: "Apex — Trigger Handler",
-      scenario: "Create a trigger handler class for the Account object. When an Account's Phone field is updated, log the old and new phone numbers to a custom object called 'Field_Change_Log__c' with fields: Object_Name__c, Record_Id__c, Field_Name__c, Old_Value__c, New_Value__c.",
-      question: "Write the Apex trigger and trigger handler class for this requirement.",
+      category: "DML & Partial Success",
+      scenario: "A batch process inserts a List<Lead> where some records fail validation rules. All valid records must be inserted, failed ones collected with error messages, and a summary returned.",
+      question: "Write insertLeadsWithSummary(List<Lead> leads) using Database.insert with allOrNone=false. Return a Map<String, List<Lead>> with keys 'success' and 'failed'.",
       language: "Apex",
-      placeholder: "// AccountTriggerHandler.cls\npublic class AccountTriggerHandler {\n  // your code here\n}",
-      codeHint: "Separate trigger logic into a handler class. Use Trigger.oldMap and Trigger.newMap. Bulk-insert Field_Change_Log__c records."
+      placeholder: "public static Map<String, List<Lead>> insertLeadsWithSummary(List<Lead> leads) {\n    // your code here\n}",
+      codeHint: "Database.insert(leads, false) returns Database.SaveResult[]. Check sr.isSuccess() for each. Use sr.getErrors() for failures. Populate 'success' and 'failed' lists."
     },
     {
       type: "coding",
-      category: "SOQL — Aggregate",
-      scenario: "The finance team needs a report showing total closed-won revenue per Account for the current fiscal year, but only for Accounts with total revenue over $500,000. Results should be ordered by total revenue descending.",
-      question: "Write the SOQL aggregate query to produce this data.",
-      language: "SOQL",
-      placeholder: "SELECT AccountId, Account.Name, SUM(Amount) totalRevenue\nFROM Opportunity\nWHERE ...\nGROUP BY ...\nHAVING ...",
-      codeHint: "Use SUM(Amount) with GROUP BY AccountId, Account.Name. Filter on StageName and fiscal year. Use HAVING SUM(Amount) > 500000."
-    },
-    {
-      type: "coding",
-      category: "Apex — Scheduled",
-      scenario: "Create a Scheduled Apex class that runs every day at midnight. It should find all Leads that were created more than 90 days ago with Status = 'New' and update their Status to 'Unqualified'.",
-      question: "Write the Schedulable Apex class for this automated cleanup job.",
+      category: "Exception Handling",
+      scenario: "A service method calls an external API using Http. It must handle: a successful 200 response, a 500 server error, and a CalloutException (network failure). Each must be handled differently and logged to Error_Log__c.",
+      question: "Write callExternalService(String endpoint) with proper try-catch-finally handling. Create an Error_Log__c record on failure with Error_Type__c, Error_Message__c, and Stack_Trace__c fields.",
       language: "Apex",
-      placeholder: "global class StaleLeadScheduler implements Schedulable {\n  // your code here\n}",
-      codeHint: "Implement Schedulable interface. Query leads with SOQL. Delegate bulk update to a Batchable class for large datasets."
+      placeholder: "public static String callExternalService(String endpoint) {\n    // your code here\n}",
+      codeHint: "Use HttpRequest/HttpResponse. Check response.getStatusCode(). Catch CalloutException separately from Exception. In catch, insert Error_Log__c with e.getMessage() and e.getStackTraceString(). Use finally for cleanup."
     },
     {
       type: "coding",
-      category: "LWC — Wire Adapter",
-      scenario: "Build a component that shows the current user's recent Opportunities. Use the getRecord wire adapter to display the user's name at the top and use a custom Apex method to fetch their 5 most recent Opportunities.",
-      question: "Write the LWC JavaScript that wires getRecord for user info and calls Apex for opportunities.",
-      language: "LWC (JS)",
-      placeholder: "import { LightningElement, wire } from 'lwc';\nimport { getRecord } from 'lightning/uiRecordApi';\nimport userId from '@salesforce/user/Id';\n// your code here",
-      codeHint: "Use @wire(getRecord) with userId and NAME field. Use @wire or imperative Apex call for opportunities. Handle loading and error states."
-    },
-    {
-      type: "coding",
-      category: "Apex — Future Method",
-      scenario: "When a new Contact is inserted, you need to call an external email verification API to validate the email address. The result (Valid/Invalid) should be written back to a custom field Email_Status__c on the Contact.",
-      question: "Write the Apex @future method that makes the callout and updates the Contact.",
+      category: "Custom Metadata",
+      scenario: "A discount service reads percentages from Discount_Rule__mdt (fields: Tier__c, Discount_Percentage__c). It must return the correct discount for a given tier, defaulting to 0 if no matching rule exists.",
+      question: "Write getDiscount(String tier) that queries the Custom Metadata Type and returns the Decimal discount. Do not hardcode any values.",
       language: "Apex",
-      placeholder: "public class EmailVerificationService {\n  @future(callout=true)\n  public static void verifyEmail(Id contactId, String email) {\n    // your code here\n  }\n}",
-      codeHint: "Use @future(callout=true). Make Http callout with the email. Parse the JSON response. Update the Contact record with the result."
+      placeholder: "public static Decimal getDiscount(String tier) {\n    // your code here\n}",
+      codeHint: "Query: [SELECT Discount_Percentage__c FROM Discount_Rule__mdt WHERE Tier__c = :tier LIMIT 1]. Check if empty before accessing index 0. Return 0 as default."
     },
     {
       type: "coding",
-      category: "SOQL — Parent-Child",
-      scenario: "You need to display each Account with all its open Cases on a custom page. Include Account Name, Account Rating, Case Number, Case Subject, and Case Status for cases that are not 'Closed'.",
-      question: "Write a SOQL query using a parent-to-child subquery to retrieve this data.",
-      language: "SOQL",
-      placeholder: "SELECT Name, Rating,\n  (SELECT CaseNumber, Subject, Status FROM Cases WHERE ...)\nFROM Account\nWHERE ...",
-      codeHint: "Use a subquery in the SELECT clause using the child relationship name 'Cases'. Filter the subquery on Status != 'Closed'."
-    },
-    {
-      type: "coding",
-      category: "LWC — Custom Event",
-      scenario: "Build a parent-child LWC pair. The child component has a 'Mark Complete' button. When clicked, it fires a custom event to the parent. The parent listens to the event and updates a 'completedCount' property displayed in its template.",
-      question: "Write both the child (taskItem.js/html) and parent (taskList.js/html) components.",
-      language: "LWC (JS)",
-      placeholder: "// taskItem.js - child component\nimport { LightningElement } from 'lwc';\n// your code here\n\n// taskList.js - parent component\nimport { LightningElement } from 'lwc';\n// your code here",
-      codeHint: "Use CustomEvent in child with bubbles:true. Use template event handler (ontaskcomplete) in parent. Update tracked property in parent handler."
-    },
-    {
-      type: "coding",
-      category: "Apex — Test Class",
-      scenario: "Write a test class for the following scenario: An Apex trigger on Account updates a custom field 'Total_Contacts__c' with the count of related active Contacts whenever a Contact is inserted, updated, or deleted.",
-      question: "Write a complete test class with test data setup, insert, update, and delete test methods achieving 100% code coverage.",
+      category: "Email Services",
+      scenario: "An Apex Email Service handler receives emails. When the subject starts with 'CASE:', create a Case: Subject = email subject minus the prefix, Description = email body, SuppliedEmail = sender address.",
+      question: "Write class CaseEmailHandler implementing Messaging.InboundEmailHandler. Implement handleInboundEmail to create the Case and return a success reply.",
       language: "Apex",
-      placeholder: "@isTest\npublic class AccountContactCountTest {\n  @TestSetup\n  static void setup() {\n    // your code here\n  }\n}",
-      codeHint: "Use @TestSetup for data creation. Write separate test methods for insert, update, delete. Use System.assertEquals to validate counts."
+      placeholder: "global class CaseEmailHandler implements Messaging.InboundEmailHandler {\n    global Messaging.InboundEmailResult handleInboundEmail(\n        Messaging.InboundEmail email,\n        Messaging.InboundEnvelope envelope\n    ) {\n        // your code here\n    }\n}",
+      codeHint: "Check email.subject.startsWith('CASE:'). Use substring(5) to strip prefix. Set Case.Subject, Case.Description = email.plainTextBody, Case.SuppliedEmail = email.fromAddress. Insert Case. Set result.success = true."
     },
     {
       type: "coding",
-      category: "Apex — Custom Exception",
-      scenario: "Build a service class that validates Opportunity data before insertion. If Amount is negative or CloseDate is in the past, throw a custom exception. The calling code should catch this exception and add a page-level error.",
-      question: "Write the custom exception class, the validation service, and example calling code that handles the exception.",
+      category: "Apex Triggers — Before Validation",
+      scenario: "On Opportunity, a before insert and before update trigger must enforce: if StageName = 'Closed Won', CloseDate must not be in the future. If it is, add a field-level error on CloseDate.",
+      question: "Write OpportunityValidationTrigger firing on before insert and before update to enforce this rule with a field-level error.",
       language: "Apex",
-      placeholder: "// OpportunityValidationException.cls\npublic class OpportunityValidationException extends Exception {}\n\n// OpportunityValidationService.cls\npublic class OpportunityValidationService {\n  // your code here\n}",
-      codeHint: "Extend Exception for the custom class. Throw in the service with a descriptive message. Catch in the controller and use ApexPages.addMessage."
+      placeholder: "trigger OpportunityValidationTrigger on Opportunity (before insert, before update) {\n    // your code here\n}",
+      codeHint: "Iterate Trigger.new. Check StageName == 'Closed Won' AND CloseDate > Date.today(). Use opp.CloseDate.addError('Close Date cannot be in the future for a Closed Won deal.')."
     },
     {
       type: "coding",
-      category: "SOQL — Dynamic",
-      scenario: "Build a dynamic SOQL method that takes an object API name, a list of field API names, a WHERE clause string, and a LIMIT integer. It should construct and execute the query safely and return a list of sObjects.",
-      question: "Write the Apex method that constructs and executes a dynamic SOQL query with these parameters.",
+      category: "Apex Triggers — Bulkification",
+      scenario: "An after insert trigger on Case must create a follow-up Task for each new Case. Subject: 'Follow up on Case: ' + CaseNumber. Due: today + 3 days. Assigned to: Case OwnerId. Must be fully bulkified with a separate handler class.",
+      question: "Write the trigger and CaseTriggerHandler class with static method createFollowUpTasks(List<Case> newCases). All DML must be outside any loop.",
       language: "Apex",
-      placeholder: "public class DynamicQueryUtil {\n  public static List<sObject> query(\n    String objectName,\n    List<String> fields,\n    String whereClause,\n    Integer limitCount\n  ) {\n    // your code here\n  }\n}",
-      codeHint: "Use String.join for fields. Build the SOQL string. Use Database.query() to execute. Validate inputs to prevent SOQL injection."
+      placeholder: "trigger CaseTrigger on Case (after insert) {\n    CaseTriggerHandler.createFollowUpTasks(Trigger.new);\n}\n\npublic class CaseTriggerHandler {\n    public static void createFollowUpTasks(List<Case> newCases) {\n        // your code here\n    }\n}",
+      codeHint: "Build List<Task> in the loop — no DML inside. Set WhatId = case.Id, Subject, ActivityDate = Date.today()+3, OwnerId. Insert the full list after the loop."
     },
     {
       type: "coding",
-      category: "LWC — Lightning Data Service",
-      scenario: "Create an LWC that uses the lightning-record-form component to display and edit an Account record. Show fields: Name, Phone, Industry, AnnualRevenue, Description. On save success, show a toast. On cancel, revert to view mode.",
-      question: "Write the complete LWC HTML template with lightning-record-form configured for edit mode.",
-      language: "LWC (HTML)",
-      placeholder: "<!-- accountEditor.html -->\n<template>\n  <!-- your code here -->\n</template>",
-      codeHint: "Use lightning-record-form with record-id, object-api-name, and fields array. Handle onsuccess with ShowToastEvent. Handle oncancel to reset mode."
-    },
-    {
-      type: "coding",
-      category: "Apex — Platform Events",
-      scenario: "When an Opportunity is updated to 'Closed Won', publish a Platform Event 'Deal_Closed__e' with fields: AccountId__c, OpportunityId__c, Amount__c, and CloseDate__c. Write the subscriber trigger that listens and creates a Congratulations Task for the owner.",
-      question: "Write both the publisher code (in a trigger) and the subscriber trigger for the Platform Event.",
+      category: "Apex Triggers — Recursion Prevention",
+      scenario: "An after update trigger on Account sends an email when Rating changes. Integration processes sometimes update Account from the same trigger causing recursion and duplicate emails.",
+      question: "Write the trigger and AccountTriggerHelper class with a static Boolean flag preventing recursion. The email logic must run only once per transaction.",
       language: "Apex",
-      placeholder: "// Publisher - in OpportunityTrigger\n// Publish Deal_Closed__e event\n\n// Subscriber - DealClosedEventTrigger\ntrigger DealClosedEventTrigger on Deal_Closed__e (after insert) {\n  // your code here\n}",
-      codeHint: "Use EventBus.publish() for the event. In the subscriber trigger, access event fields via Trigger.new. Bulkify the Task insert."
+      placeholder: "public class AccountTriggerHelper {\n    public static Boolean hasRun = false;\n\n    public static void handleRatingChange(List<Account> newList, Map<Id, Account> oldMap) {\n        // your code here\n    }\n}\n\ntrigger AccountTrigger on Account (after update) {\n    // your code here\n}",
+      codeHint: "Check if (!AccountTriggerHelper.hasRun). Set hasRun = true immediately. Compare newList Rating vs oldMap.get(a.Id).Rating to detect changes. Send email only for changed records."
+    },
+    {
+      type: "coding",
+      category: "Apex Triggers — Delete/Undelete",
+      scenario: "A trigger on Contact handles before delete and after undelete. On before delete: block deletion of Contacts where related Account.Type = 'Key Account'. On after undelete: set Description = 'Record restored on ' + today's date.",
+      question: "Write ContactLifecycleTrigger handling both operations in a bulkified way.",
+      language: "Apex",
+      placeholder: "trigger ContactLifecycleTrigger on Contact (before delete, after undelete) {\n    // your code here\n}",
+      codeHint: "Before delete: collect AccountIds from Trigger.old, query Accounts WHERE Type='Key Account', build a Set<Id> of key account Ids, add addError() on matching Contacts. After undelete: iterate Trigger.new, set Description, update in bulk."
+    },
+    {
+      type: "coding",
+      category: "Apex Triggers — Field Change Detection",
+      scenario: "A trigger on Opportunity fires after update. When the StageName field changes, you must insert a Stage_History__c record capturing: OpportunityId, Old_Stage__c, New_Stage__c, Changed_Date__c (today).",
+      question: "Write the trigger and handler method trackStageChanges(List<Opportunity> newList, Map<Id, Opportunity> oldMap) that detects stage changes and bulk-inserts Stage_History__c records.",
+      language: "Apex",
+      placeholder: "trigger OpportunityTrigger on Opportunity (after update) {\n    OpportunityTriggerHandler.trackStageChanges(Trigger.new, Trigger.oldMap);\n}\n\npublic class OpportunityTriggerHandler {\n    public static void trackStageChanges(\n        List<Opportunity> newList,\n        Map<Id, Opportunity> oldMap\n    ) {\n        // your code here\n    }\n}",
+      codeHint: "Iterate newList. Compare opp.StageName != oldMap.get(opp.Id).StageName. Build List<Stage_History__c> with all four fields. Insert after loop."
+    },
+    {
+      type: "coding",
+      category: "Apex — Test Classes",
+      scenario: "Write a test class for a trigger that sets a Contact's Title = 'VIP' when the related Account's AnnualRevenue > 1,000,000. Must validate positive case, negative case, and bulk behaviour with 200 records each.",
+      question: "Write VIPContactTriggerTest with @TestSetup, a bulk positive test, and a bulk negative test.",
+      language: "Apex",
+      placeholder: "@isTest\npublic class VIPContactTriggerTest {\n\n    @TestSetup\n    static void setup() {\n        // your code here\n    }\n\n    @isTest\n    static void testBulkPositive() {\n        // your code here\n    }\n\n    @isTest\n    static void testBulkNegative() {\n        // your code here\n    }\n}",
+      codeHint: "In @TestSetup create Accounts with high and low revenue. In each test insert 200 Contacts. Query Contacts back and use System.assertEquals to check Title values for all 200."
+    },
+    {
+      type: "coding",
+      category: "Debugging & Logging",
+      scenario: "A production Apex service is failing with a generic error. You need structured diagnostic logging that captures: context name, message, governor limit usage at checkpoints (SOQL count, DML count, heap, CPU), and exception details.",
+      question: "Write DiagnosticLogger with static methods log(String context, String message) and logException(String context, Exception e) that output structured debug lines with current limit stats.",
+      language: "Apex",
+      placeholder: "public class DiagnosticLogger {\n\n    public static void log(String context, String message) {\n        // your code here\n    }\n\n    public static void logException(String context, Exception e) {\n        // your code here\n    }\n}",
+      codeHint: "Use Limits.getQueries(), Limits.getLimitQueries(), Limits.getDmlStatements(), Limits.getCpuTime(), Limits.getHeapSize(). For logException: e.getTypeName(), e.getMessage(), e.getStackTraceString()."
+    },
+    {
+      type: "coding",
+      category: "Custom Labels",
+      scenario: "Validation error messages are hardcoded in Apex. They must be moved to Custom Labels so they can be translated and updated without code changes.",
+      question: "Write MessageService with three static methods returning Custom Label values: getRequiredFieldError(), getSuccessMessage(), getDuplicateWarning(). Show how the same labels are referenced in a Visualforce page.",
+      language: "Apex",
+      placeholder: "public class MessageService {\n\n    public static String getRequiredFieldError() {\n        // your code here\n    }\n\n    public static String getSuccessMessage() {\n        // your code here\n    }\n\n    public static String getDuplicateWarning() {\n        // your code here\n    }\n    \n    // Visualforce equivalent shown as a comment below:\n}",
+      codeHint: "Return System.Label.Required_Field_Error etc. in Apex. In a comment show the Visualforce equivalent: {!$Label.Required_Field_Error}."
+    },
+    {
+      type: "coding",
+      category: "DML — Upsert",
+      scenario: "An integration receives a List<Account> from an external system. Each Account has an External_System_Id__c custom external Id field. Some records exist in Salesforce already; some are new. Both must be handled atomically.",
+      question: "Write syncAccounts(List<Account> incomingAccounts) using Database.upsert with External_System_Id__c as the key and allOrNone=false. Log any errors from UpsertResult.",
+      language: "Apex",
+      placeholder: "public static void syncAccounts(List<Account> incomingAccounts) {\n    // your code here\n}",
+      codeHint: "Database.upsert(incomingAccounts, Account.External_System_Id__c, false). Iterate Database.UpsertResult[]. Check ur.isSuccess(). For failures: ur.getErrors() gives error list with message and statusCode."
+    },
+    {
+      type: "coding",
+      category: "Custom Settings",
+      scenario: "A Hierarchy Custom Setting Feature_Flags__c has a Boolean field Enable_New_Pricing__c. You need a utility method that returns true only if the flag is enabled for the currently running user, checking user → profile → org default in order.",
+      question: "Write getFeatureFlag() that queries the Custom Setting for the running user using getInstance() and safely returns the Boolean field value, defaulting to false if no setting is found.",
+      language: "Apex",
+      placeholder: "public static Boolean getFeatureFlag() {\n    // your code here\n}",
+      codeHint: "Feature_Flags__c setting = Feature_Flags__c.getInstance(UserInfo.getUserId()); — this resolves hierarchy automatically. Null-check before accessing. Return false as default."
     }
   ],
 
-  // ──────────────────────────────────────────────────────────────────
-  //  MCQ — 20 questions (5 randomly picked)
-  // ──────────────────────────────────────────────────────────────────
+  // ────────────────────────────────────────────────────────────────
+  //  MCQ — 20 questions
+  // ────────────────────────────────────────────────────────────────
   mcq: [
+
     {
       type: "mcq",
-      category: "Security",
-      scenario: "An org has OWD set to Private for Opportunities. A Sales Rep creates an Opportunity. The Rep's Manager is directly above them in the Role Hierarchy.",
-      question: "Can the Manager see the Rep's Opportunity without any sharing rule?",
-      options: ["No, OWD Private blocks all access", "Yes, Role Hierarchy grants access upward", "Only if a manual share is created", "Only if the Manager is also the Record Owner"],
-      answer: 1
-    },
-    {
-      type: "mcq",
-      category: "Deployment",
-      scenario: "An admin made configuration changes in a sandbox and needs to deploy them to production. The changes include custom fields, page layouts, and a Flow.",
-      question: "What is the recommended deployment method for this?",
-      options: ["Manually recreate changes in production", "Use Change Sets", "Use Data Loader to transfer metadata", "Export/import using Workbench"],
-      answer: 1
-    },
-    {
-      type: "mcq",
-      category: "Apex — Concepts",
-      scenario: "A developer needs to run a complex data processing job that involves updating 1 million records without hitting governor limits.",
-      question: "Which Apex feature is designed for this use case?",
-      options: ["@future methods", "Queueable Apex", "Batch Apex", "Platform Events"],
+      category: "Data Types",
+      scenario: "A developer needs to store monetary values requiring exact decimal precision for tax calculations, with no floating-point rounding errors.",
+      question: "Which Apex data type should be used for precise decimal arithmetic?",
+      options: ["Double", "Float", "Decimal", "Long"],
       answer: 2
     },
     {
       type: "mcq",
-      category: "Flows",
-      scenario: "A Flow needs to look up an Account record, and if it doesn't exist, create a new one, otherwise update the existing record — all in one Flow.",
-      question: "Which Flow elements would handle this logic?",
+      category: "Data Types & Type Casting",
+      scenario: "The following Apex code executes: Integer i = (Integer) 9.9;",
+      question: "What is the value of i after this statement?",
+      options: ["10 — it rounds up to the nearest integer", "9 — it truncates the decimal portion", "A TypeException is thrown at runtime", "A compile error is thrown because Double cannot be cast to Integer"],
+      answer: 1
+    },
+    {
+      type: "mcq",
+      category: "Conditional Statements",
+      scenario: "An Apex switch statement is written to evaluate a String variable. At runtime the variable's value is null.",
+      question: "How does an Apex switch statement handle a null input value?",
       options: [
-        "Get Records → Decision → Create Records or Update Records",
-        "Loop → Assignment → Create Records",
-        "Subflow → Get Records → Update Records",
-        "Assignment → Get Records → Create Records"
+        "It throws a NullPointerException automatically",
+        "It matches the first when clause regardless of value",
+        "It falls through to the else/default block if present, otherwise does nothing",
+        "Null causes a compile-time error in switch statements"
+      ],
+      answer: 2
+    },
+    {
+      type: "mcq",
+      category: "Iterations",
+      scenario: "A developer iterates a List<String> with a for-each loop and calls list.remove(item) inside the loop body to remove certain items.",
+      question: "What happens when you modify a List while iterating it with a for-each loop in Apex?",
+      options: [
+        "It works correctly and removes the item",
+        "A compile error is thrown",
+        "A System.ListException or ConcurrentModificationException is thrown at runtime",
+        "The loop silently skips the item after each removal"
+      ],
+      answer: 2
+    },
+    {
+      type: "mcq",
+      category: "SOQL Governor Limits",
+      scenario: "A developer writes a SOQL query that returns 60,000 rows assigned directly to a List<Account> variable in a single transaction.",
+      question: "What happens when a SOQL result assigned to a List exceeds 50,000 rows?",
+      options: [
+        "Only the first 50,000 records are returned silently",
+        "A QueryException is thrown: 'Too many query rows: 50001'",
+        "The query automatically paginates into the list in chunks",
+        "A heap size error is always thrown before the query limit is reached"
+      ],
+      answer: 1
+    },
+    {
+      type: "mcq",
+      category: "SOQL Injection",
+      scenario: "A developer builds a dynamic SOQL string by concatenating a user-supplied search value directly into the WHERE clause.",
+      question: "Which is the most secure way to handle user input in dynamic SOQL?",
+      options: [
+        "Use String.escapeSingleQuotes() on the input before concatenating",
+        "Use EncodingUtil.urlEncode() to sanitise the input",
+        "Use a bind variable (:userInput) instead of string concatenation",
+        "Wrap the concatenation in a try-catch block"
+      ],
+      answer: 2
+    },
+    {
+      type: "mcq",
+      category: "SOQL For Loop",
+      scenario: "A developer uses a SOQL for loop: for (List<Account> chunk : [SELECT Id FROM Account WHERE ...]) { ... }",
+      question: "How many records does each chunk List contain per iteration by default?",
+      options: ["1 record per iteration", "100 records per iteration", "200 records per iteration", "500 records per iteration"],
+      answer: 2
+    },
+    {
+      type: "mcq",
+      category: "SOSL — Test Context",
+      scenario: "A developer inserts a Contact in a test method and immediately runs a SOSL query searching for that Contact. The SOSL returns zero results.",
+      question: "Why does SOSL return no results for newly inserted records in test context?",
+      options: [
+        "SOSL is not supported inside test methods",
+        "Search indexes are not updated during test execution; use Test.setFixedSearchResults() to mock results",
+        "The Contact was not committed to the database before the SOSL executed",
+        "SOSL requires a minimum of 10 records to return any results"
+      ],
+      answer: 1
+    },
+    {
+      type: "mcq",
+      category: "DML — Partial Success",
+      scenario: "A developer calls insert(recordList) where some records will fail due to validation rules. They want valid records saved and failures reported without rolling back the entire operation.",
+      question: "Which approach allows partial success in a DML insert?",
+      options: [
+        "Wrap insert recordList in a try-catch to catch only failed records",
+        "Database.insert(recordList, false) and iterate Database.SaveResult[] to check isSuccess()",
+        "Database.insert(recordList, true) and check UpsertResult[]",
+        "Partial inserts are not supported in Apex — it is always all-or-nothing"
+      ],
+      answer: 1
+    },
+    {
+      type: "mcq",
+      category: "DML — Upsert",
+      scenario: "A developer needs to insert-or-update a list of Contact records using Email as the match key. Email is configured as an external Id field on Contact.",
+      question: "Which Apex DML statement handles this in a single operation?",
+      options: [
+        "merge contactList Contact.Email",
+        "update contactList",
+        "upsert contactList Contact.Email",
+        "Database.insertOrUpdate(contactList)"
+      ],
+      answer: 2
+    },
+    {
+      type: "mcq",
+      category: "Exception Handling — Savepoints",
+      scenario: "A DmlException inside a catch block causes a silent failure because the transaction was already rolled back by the original exception. The developer needs to recover and continue.",
+      question: "Which mechanism allows you to partially roll back a transaction to a specific point and then continue executing DML afterward?",
+      options: [
+        "Database.rollback() called without any parameters",
+        "System.undoLastDml() reverts the most recent DML statement",
+        "Savepoint sp = Database.setSavepoint() before the risky DML, then Database.rollback(sp) in the catch",
+        "Using a try block inside a finally block to re-attempt the DML"
+      ],
+      answer: 2
+    },
+    {
+      type: "mcq",
+      category: "Exception Handling — Multiple Catch",
+      scenario: "A developer writes: try { ... } catch (DmlException e) { ... } catch (Exception e) { ... }",
+      question: "Which exceptions are caught by the second catch (Exception e) block?",
+      options: [
+        "Only DmlExceptions that were explicitly re-thrown in the first catch",
+        "All exceptions including DmlException since Exception is the base class",
+        "All exceptions EXCEPT DmlException, which is already handled by the first block",
+        "The code does not compile — multiple catch blocks are not supported in Apex"
+      ],
+      answer: 2
+    },
+    {
+      type: "mcq",
+      category: "Custom Metadata vs Custom Settings",
+      scenario: "A team needs configuration data that is deployable between sandboxes via Change Sets, survives sandbox refreshes, and is queryable in Apex. Per-user values are not required.",
+      question: "Which configuration tool best meets all these requirements?",
+      options: [
+        "Custom Settings — Hierarchy type",
+        "Custom Settings — List type",
+        "Custom Metadata Types",
+        "Custom Labels"
+      ],
+      answer: 2
+    },
+    {
+      type: "mcq",
+      category: "Custom Labels",
+      scenario: "A Custom Label is referenced in Apex using System.Label.My_Label_Name. The label has a French translation configured.",
+      question: "When will the French translation be returned instead of the default value?",
+      options: [
+        "When the running user's language preference is set to French",
+        "Custom Labels always return the default value in Apex; translations only work in Visualforce",
+        "When the org's default language is set to French",
+        "Only when explicitly requested via a Language parameter in the API call"
       ],
       answer: 0
     },
     {
       type: "mcq",
-      category: "Salesforce Platform",
-      scenario: "A company needs to store 500GB of files (PDFs, images) uploaded by customers through an Experience Cloud portal.",
-      question: "Which Salesforce storage option is most cost-effective for large binary files?",
-      options: ["Salesforce Files storage", "Chatter Files", "Salesforce CRM Content", "Files stored as Attachments on records"],
-      answer: 0
-    },
-    {
-      type: "mcq",
-      category: "Reports & Dashboards",
-      scenario: "A dashboard component must always show data as of the last time the dashboard was refreshed, regardless of who is viewing it.",
-      question: "Which dashboard running user setting achieves this?",
-      options: ["Run as logged-in user", "Run as specified user", "Run as dashboard owner", "Dynamic Dashboard"],
-      answer: 1
-    },
-    {
-      type: "mcq",
-      category: "Data Quality",
-      scenario: "The admin wants to prevent users from creating a new Contact if another Contact with the same email address already exists in the system. A hard block is required.",
-      question: "Which Salesforce feature achieves the hard block?",
-      options: ["Matching Rule only", "Matching Rule + Duplicate Rule set to Block", "Validation Rule checking for duplicate email", "Duplicate Rule with Alert action only"],
-      answer: 1
-    },
-    {
-      type: "mcq",
-      category: "Integration",
-      scenario: "An external application needs to query Salesforce data in real time and handle responses of up to 100,000 records efficiently.",
-      question: "Which Salesforce API is most appropriate?",
-      options: ["SOAP API", "REST API", "Bulk API 2.0", "Streaming API"],
-      answer: 2
-    },
-    {
-      type: "mcq",
-      category: "Communities / Experience Cloud",
-      scenario: "External partner users in an Experience Cloud site should only see Account records that belong to their own company.",
-      question: "Which feature controls this access for external users?",
-      options: ["Role Hierarchy", "Account-based Sharing in Partner Communities", "OWD set to Public", "Permission Sets for External Users"],
-      answer: 1
-    },
-    {
-      type: "mcq",
-      category: "Change Data Capture",
-      scenario: "A third-party system needs to be notified in near-real-time whenever a Contact record in Salesforce is updated, deleted, or undeleted — without polling.",
-      question: "Which Salesforce feature enables this?",
-      options: ["Outbound Messages", "Platform Events", "Change Data Capture", "Streaming API PushTopics"],
-      answer: 2
-    },
-    {
-      type: "mcq",
-      category: "Einstein Features",
-      scenario: "A sales manager wants Salesforce to automatically predict whether each open Opportunity is likely to close this quarter based on historical data.",
-      question: "Which Einstein feature provides this capability out of the box?",
-      options: ["Einstein Activity Capture", "Einstein Opportunity Scoring", "Einstein Lead Scoring", "Einstein Analytics Predictions"],
-      answer: 1
-    },
-    {
-      type: "mcq",
-      category: "Sandboxes",
-      scenario: "A developer needs an environment to build and test new Apex code with a small subset of production data (up to 10GB). The sandbox must be refreshable monthly.",
-      question: "Which sandbox type is the right fit?",
-      options: ["Developer Sandbox", "Developer Pro Sandbox", "Partial Copy Sandbox", "Full Sandbox"],
-      answer: 2
-    },
-    {
-      type: "mcq",
-      category: "Validation Rules",
-      scenario: "An admin wants to prevent Opportunities from being saved if the Close Date is set to a date in the past AND the Stage is not 'Closed Won' or 'Closed Lost'.",
-      question: "Which formula correctly implements this validation?",
+      category: "Apex Triggers — Context Variables",
+      scenario: "A trigger on Contact is written for the delete event. The developer uses Trigger.new inside the trigger body.",
+      question: "What is the value of Trigger.new in a delete trigger?",
       options: [
-        "CloseDate < TODAY() && ISPICKVAL(StageName, 'Closed Won')",
-        "CloseDate < TODAY() && NOT(ISPICKVAL(StageName,'Closed Won') || ISPICKVAL(StageName,'Closed Lost'))",
-        "CloseDate < TODAY() || ISPICKVAL(StageName, 'Closed Lost')",
-        "NOT(CloseDate > TODAY()) && StageName != 'Closed Won'"
+        "It contains the records being deleted with their current field values",
+        "It contains the records as they will appear after deletion",
+        "It is null — only Trigger.old is populated on a delete trigger",
+        "It contains an empty list"
+      ],
+      answer: 2
+    },
+    {
+      type: "mcq",
+      category: "Apex Triggers — Before vs After",
+      scenario: "A developer needs to set a default field value before the record is written to the database, without issuing an additional DML update statement.",
+      question: "Which trigger event handles this most efficiently?",
+      options: [
+        "after insert — to read the new Id after database assignment",
+        "before insert — fields can be modified directly on Trigger.new records before save",
+        "after update — to re-set values after the initial save",
+        "before delete — to preserve values before removal"
       ],
       answer: 1
     },
     {
       type: "mcq",
-      category: "Object Relationships",
-      scenario: "An admin needs to create a relationship where deleting the parent record also deletes all child records, and roll-up summary fields are required on the parent.",
-      question: "Which relationship type should be used?",
-      options: ["Lookup Relationship", "Master-Detail Relationship", "Many-to-Many (Junction Object)", "External Lookup"],
-      answer: 1
+      category: "Apex Triggers — Bulk Processing",
+      scenario: "A trigger on Account is invoked by a Data Loader operation that updates 2,000 records at once.",
+      question: "How does Salesforce invoke the trigger for these 2,000 records?",
+      options: [
+        "One trigger invocation processes all 2,000 records simultaneously",
+        "One trigger invocation fires per record — 2,000 separate calls",
+        "Triggers fire in chunks of 200 records — 10 separate invocations with limits resetting each time",
+        "Triggers are bypassed for bulk Data Loader operations exceeding 1,000 records"
+      ],
+      answer: 2
     },
     {
       type: "mcq",
-      category: "Apex — Governor Limits",
-      scenario: "A trigger on the Contact object queries the Account object inside a for loop iterating over Trigger.new records. The org has 200 contacts updated in one batch.",
-      question: "What is the problem with this code?",
+      category: "Apex Triggers — Recursion",
+      scenario: "A static Boolean flag prevents trigger recursion. The flag is set to true on first run. A batch job processes 2,000 records across 10 trigger invocations of 200 records each.",
+      question: "What is the primary limitation of the static Boolean flag anti-recursion pattern?",
       options: [
-        "SOQL queries are not allowed in triggers",
-        "It violates the 100 SOQL queries per transaction governor limit",
-        "Trigger.new cannot be iterated in a for loop",
-        "Contacts cannot query Accounts in Apex"
+        "Static variables reset between each 200-record chunk, so the flag offers no protection across chunks",
+        "The flag prevents ALL subsequent trigger invocations in the same transaction, including legitimate non-recursive ones",
+        "Static variables are not supported inside trigger handler classes, only in regular Apex classes",
+        "The flag only works for before triggers and has no effect on after triggers"
       ],
       answer: 1
     },
     {
       type: "mcq",
-      category: "Flow Types",
-      scenario: "A business requirement states: 'When a new Case is created via API or record insert (not by user), automatically assign it to the correct queue based on Case Type.'",
-      question: "Which Flow type best meets this requirement?",
-      options: ["Screen Flow", "Schedule-Triggered Flow", "Record-Triggered Flow", "Platform Event-Triggered Flow"],
+      category: "Apex Triggers — Order of Execution",
+      scenario: "A developer wants to know at which point in the Salesforce order of execution an Apex before trigger fires relative to validation rules.",
+      question: "When does an Apex before trigger fire in the Salesforce order of execution?",
+      options: [
+        "After all validation rules (system and custom) have run",
+        "Before any system validation — it is the very first thing to execute on save",
+        "After system validation (required fields, data formats) but before custom validation rules",
+        "After workflow field updates but before record commits"
+      ],
       answer: 2
     },
     {
       type: "mcq",
-      category: "Data Loader",
-      scenario: "An admin needs to import 500,000 Account records from a CSV file. The operation must handle partial successes and failures must be logged for review.",
-      question: "Which tool and setting is most appropriate?",
+      category: "Governor Limits",
+      scenario: "A developer calls Limits.getQueries() and finds they have used 45 out of 100 SOQL queries. They add a new feature and the code now starts failing with CPU time limit errors instead of SOQL errors.",
+      question: "What is the synchronous Apex CPU time governor limit?",
       options: [
-        "Data Import Wizard with standard settings",
-        "Data Loader with Insert and success/error log files",
-        "Workbench Bulk API with synchronous mode",
-        "SOQL-based insert from Developer Console"
+        "5,000 milliseconds (5 seconds)",
+        "10,000 milliseconds (10 seconds)",
+        "30,000 milliseconds (30 seconds)",
+        "60,000 milliseconds (60 seconds) — same as asynchronous"
       ],
       answer: 1
-    },
-    {
-      type: "mcq",
-      category: "Process Automation",
-      scenario: "A Salesforce admin needs to update a field on a parent Account whenever any of its child Contacts is marked as 'VIP'. No code should be involved.",
-      question: "Which declarative tool is best suited for this cross-object field update?",
-      options: ["Workflow Rule with Field Update", "Process Builder", "Record-Triggered Flow with Update Records (cross-object)", "Validation Rule"],
-      answer: 2
-    },
-    {
-      type: "mcq",
-      category: "Sharing Model",
-      scenario: "After setting OWD for Leads to 'Public Read Only', the admin realises that users in the same territory still cannot edit each other's leads.",
-      question: "What is the correct OWD setting to allow users to read and edit all records?",
-      options: ["Private", "Public Read Only", "Public Read/Write", "Controlled by Parent"],
-      answer: 2
-    },
-    {
-      type: "mcq",
-      category: "API Limits",
-      scenario: "A company's integration team is hitting the daily API request limit (15,000 calls/day on Enterprise Edition) due to frequent polling of Salesforce for record changes.",
-      question: "Which Salesforce feature eliminates the need for polling and reduces API usage?",
-      options: ["REST API with pagination", "Bulk API 2.0", "Streaming API / CometD", "SOAP API with compression"],
-      answer: 2
     }
   ]
 };
 
-// ── Shuffle Utility ─────────────────────────────────────────────────
+// ── Shuffle Utility ──────────────────────────────────────────────────
 function shuffle(arr) {
   const a = [...arr];
   for (let i = a.length - 1; i > 0; i--) {
@@ -674,13 +773,13 @@ function shuffle(arr) {
   return a;
 }
 
-// ── Build Random 20-Question Set ────────────────────────────────────
+// ── Build Random 20-Question Set ─────────────────────────────────────
+// Each session: 10 scenario + 5 coding + 5 MCQ = 20 questions
 function buildQuestionSet() {
   const descriptive = shuffle(ALL_QUESTIONS.scenario).slice(0, 10);
   const coding      = shuffle(ALL_QUESTIONS.coding).slice(0, 5);
   const mcq         = shuffle(ALL_QUESTIONS.mcq).slice(0, 5);
 
-  // Interleave types for a natural exam feel
   return [
     ...descriptive.slice(0, 4),
     ...coding.slice(0, 2),
@@ -694,5 +793,5 @@ function buildQuestionSet() {
   ];
 }
 
-// QUESTIONS is used by quiz.js — built fresh on quiz start
+// QUESTIONS is used by quiz.js — populated fresh on each quiz start
 let QUESTIONS = [];
