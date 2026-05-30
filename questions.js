@@ -348,7 +348,9 @@ const ALL_QUESTIONS = {
       category: "Data Types",
       scenario: "A developer wants to print all primitive data types in Apex.",
       question: "Write an Apex class demonstrating all primitive data types.",
-      language: "Apex"
+      language: "Apex",
+      placeholder: "",
+      codeHint: ""
     },
 
     {
@@ -356,7 +358,9 @@ const ALL_QUESTIONS = {
       category: "Type Casting",
       scenario: "A utility method receives Object values dynamically.",
       question: "Write an Apex method to safely convert Object to Integer.",
-      language: "Apex"
+      language: "Apex",
+      placeholder: "",
+      codeHint: ""
     },
 
     {
@@ -364,7 +368,9 @@ const ALL_QUESTIONS = {
       category: "Conditional Statements",
       scenario: "Employee bonus depends on performance score.",
       question: "Write an Apex program using if-else statements for bonus calculation.",
-      language: "Apex"
+      language: "Apex",
+      placeholder: "",
+      codeHint: ""
     },
 
     {
@@ -372,7 +378,9 @@ const ALL_QUESTIONS = {
       category: "Iterations",
       scenario: "A developer needs to print numbers from 1 to 100.",
       question: "Write an Apex program using a for loop.",
-      language: "Apex"
+      language: "Apex",
+      placeholder: "",
+      codeHint: ""
     },
 
     {
@@ -380,7 +388,9 @@ const ALL_QUESTIONS = {
       category: "DML",
       scenario: "An Account record should be inserted and updated.",
       question: "Write Apex code to insert and update an Account.",
-      language: "Apex"
+      language: "Apex",
+      placeholder: "",
+      codeHint: ""
     },
 
     {
@@ -388,7 +398,9 @@ const ALL_QUESTIONS = {
       category: "SOQL",
       scenario: "Accounts and related Contacts should be fetched.",
       question: "Write a SOQL relationship query.",
-      language: "SOQL"
+      language: "SOQL",
+      placeholder: "",
+      codeHint: ""
     },
 
     {
@@ -396,7 +408,9 @@ const ALL_QUESTIONS = {
       category: "SOQL",
       scenario: "Opportunity count per Account is required.",
       question: "Write a SOQL aggregate query.",
-      language: "SOQL"
+      language: "SOQL",
+      placeholder: "",
+      codeHint: ""
     },
 
     {
@@ -404,7 +418,9 @@ const ALL_QUESTIONS = {
       category: "SOSL",
       scenario: "Users search Accounts and Contacts together.",
       question: "Write a SOSL query for global search.",
-      language: "SOSL"
+      language: "SOSL",
+      placeholder: "",
+      codeHint: ""
     },
 
     {
@@ -412,7 +428,9 @@ const ALL_QUESTIONS = {
       category: "Collections",
       scenario: "Accounts should be stored and accessed efficiently.",
       question: "Write Apex code using Map<Id, Account>.",
-      language: "Apex"
+      language: "Apex",
+      placeholder: "",
+      codeHint: ""
     },
 
     {
@@ -420,7 +438,9 @@ const ALL_QUESTIONS = {
       category: "Bulkification",
       scenario: "200 Contacts should be inserted efficiently.",
       question: "Write bulkified Apex code for Contact insertion.",
-      language: "Apex"
+      language: "Apex",
+      placeholder: "",
+      codeHint: ""
     },
 
     {
@@ -428,7 +448,9 @@ const ALL_QUESTIONS = {
       category: "Exception Handling",
       scenario: "An invalid DML operation throws an exception.",
       question: "Write Apex code using try-catch.",
-      language: "Apex"
+      language: "Apex",
+      placeholder: "",
+      codeHint: ""
     },
 
     {
@@ -436,7 +458,9 @@ const ALL_QUESTIONS = {
       category: "Custom Metadata",
       scenario: "Tax configuration values are stored in metadata.",
       question: "Write Apex code to query Custom Metadata records.",
-      language: "Apex"
+      language: "Apex",
+      placeholder: "",
+      codeHint: ""
     },
 
     {
@@ -444,7 +468,9 @@ const ALL_QUESTIONS = {
       category: "Custom Settings",
       scenario: "User-specific configurations should be accessed.",
       question: "Write Apex code to query Hierarchy Custom Settings.",
-      language: "Apex"
+      language: "Apex",
+      placeholder: "",
+      codeHint: ""
     },
 
     {
@@ -452,7 +478,9 @@ const ALL_QUESTIONS = {
       category: "Before Trigger",
       scenario: "Department should default to Sales during Contact creation.",
       question: "Write a before insert trigger on Contact.",
-      language: "Apex"
+      language: "Apex",
+      placeholder: "",
+      codeHint: ""
     },
 
     {
@@ -460,7 +488,9 @@ const ALL_QUESTIONS = {
       category: "After Trigger",
       scenario: "A Task should be created after Opportunity Closed Won.",
       question: "Write an after update trigger on Opportunity.",
-      language: "Apex"
+      language: "Apex",
+      placeholder: "",
+      codeHint: ""
     },
 
     {
@@ -468,7 +498,9 @@ const ALL_QUESTIONS = {
       category: "Duplicate Prevention",
       scenario: "Duplicate Contacts should not exist under same Account.",
       question: "Write a trigger to prevent duplicate Contacts.",
-      language: "Apex"
+      language: "Apex",
+      placeholder: "",
+      codeHint: ""
     },
 
     {
@@ -476,7 +508,9 @@ const ALL_QUESTIONS = {
       category: "Delete Trigger",
       scenario: "Accounts with Opportunities should not be deleted.",
       question: "Write a before delete trigger on Account.",
-      language: "Apex"
+      language: "Apex",
+      placeholder: "",
+      codeHint: ""
     },
 
     {
@@ -484,7 +518,9 @@ const ALL_QUESTIONS = {
       category: "Trigger Context Variables",
       scenario: "Old and new Opportunity values should be compared.",
       question: "Write a trigger using oldMap and newMap.",
-      language: "Apex"
+      language: "Apex",
+      placeholder: "",
+      codeHint: ""
     },
 
     {
@@ -492,7 +528,9 @@ const ALL_QUESTIONS = {
       category: "Bulkification",
       scenario: "Account Contact count should update automatically.",
       question: "Write a bulkified trigger for Contact count update.",
-      language: "Apex"
+      language: "Apex",
+      placeholder: "",
+      codeHint: ""
     },
 
     {
@@ -500,7 +538,9 @@ const ALL_QUESTIONS = {
       category: "Trigger Framework",
       scenario: "A project requires maintainable trigger architecture.",
       question: "Write a basic Trigger Handler class structure.",
-      language: "Apex"
+      language: "Apex",
+      placeholder: "",
+      codeHint: ""
     }
 
   ],
