@@ -3,7 +3,7 @@
 //  Replace SCRIPT_URL with your Google Apps Script Web App URL
 // =====================================================================
 
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby-5sTkEbPQMq59trsIIINWiiKogBdkCHqgc6la6EYdZ_Ms5IWoOH6pShDnTz03YZVq/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbykbBR683RWrOC5ug1n0XaMluPP3oHRjp2oncF4cbC14_2ujxClpDtXhXgvwJdZmLFU/exec";
 // Example: "https://script.google.com/macros/s/AKfycb.../exec"
 
 // ── Anti-Cheat: Tab Switch, Page Leave, Shortcuts ─────────────────
